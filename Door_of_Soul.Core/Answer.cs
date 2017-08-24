@@ -6,20 +6,10 @@ namespace Door_of_Soul.Core
 {
     public abstract class Answer
     {
-        public int AnswerID { get; private set; }
+        public event Action<Answer, Soul> OnSoulLinked;
+        public event Action<Answer, Soul> OnSoulUnlinked;
 
-        private object devicesLock = new object();
-        private List<Device> devices = new List<Device>();
-        public IEnumerable<Device> Devices
-        {
-            get
-            {
-                lock(devicesLock)
-                {
-                    return devices.ToArray();
-                }
-            }
-        }
+        public int AnswerId { get; private set; }
 
         private object soulDictionaryLock = new object();
         private Dictionary<int, Soul> soulDictionary = new Dictionary<int, Soul>();
@@ -34,84 +24,27 @@ namespace Door_of_Soul.Core
             }
         }
 
-        public event Action<Answer, Device> OnDeviceLinked;
-        public event Action<Answer, Device> OnDeviceUnlinked;
-
-        public event Action<Answer, Soul> OnSoulLinked;
-        public event Action<Answer, Soul> OnSoulUnlinked;
-
-        protected Answer(int answerID)
+        protected Answer(int answerId)
         {
-            AnswerID = answerID;
+            AnswerId = answerId;
         }
 
-        public bool IsDeviceLinked(Device device)
+        public bool IsSoulLinked(int soulId)
         {
-            return devices.Contains(device);
-        }
-        public bool LinkDevice(Device device)
-        {
-            lock (devicesLock)
-            {
-                if(IsDeviceLinked(device))
-                {
-                    return false;
-                }
-                else
-                {
-                    devices.Add(device);
-                    if(!device.IsAnswerLinked(AnswerID))
-                    {
-                        device.LinkAnswer(this);
-                    }
-                    OnDeviceLinked?.Invoke(this, device);
-                    return true;
-                }
-            }
-        }
-        public bool UnlinkDevice(Device device)
-        {
-            lock (devicesLock)
-            {
-                if (!IsDeviceLinked(device))
-                {
-                    return false;
-                }
-                else
-                {
-                    if (devices.Remove(device))
-                    {
-                        if(device.IsAnswerLinked(AnswerID))
-                        {
-                            device.UnlinkAnswer();
-                        }
-                        OnDeviceUnlinked?.Invoke(this, device);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        public bool IsSoulLinked(int soulID)
-        {
-            return soulDictionary.ContainsKey(soulID);
+            return soulDictionary.ContainsKey(soulId);
         }
         public bool LinkSoul(Soul soul)
         {
             lock (soulDictionaryLock)
             {
-                if(IsSoulLinked(soul.SoulID))
+                if(IsSoulLinked(soul.SoulId))
                 {
                     return false;
                 }
                 else
                 {
-                    soulDictionary.Add(soul.SoulID, soul);
-                    if(!soul.IsAnswerLinked(AnswerID))
+                    soulDictionary.Add(soul.SoulId, soul);
+                    if(!soul.IsAnswerLinked(AnswerId))
                     {
                         soul.LinkAnswer(this);
                     }
@@ -120,15 +53,15 @@ namespace Door_of_Soul.Core
                 }
             }
         }
-        public bool UnlinkSoul(int soulID)
+        public bool UnlinkSoul(int soulId)
         {
             lock (soulDictionaryLock)
             {
-                if (IsSoulLinked(soulID))
+                if (IsSoulLinked(soulId))
                 {
-                    Soul soul = soulDictionary[soulID];
-                    soulDictionary.Remove(soulID);
-                    if(soul.IsAnswerLinked(AnswerID))
+                    Soul soul = soulDictionary[soulId];
+                    soulDictionary.Remove(soulId);
+                    if(soul.IsAnswerLinked(AnswerId))
                     {
                         soul.UnlinkAnswer();
                     }
@@ -137,6 +70,22 @@ namespace Door_of_Soul.Core
                 }
                 else
                 {
+                    return false;
+                }
+            }
+        }
+        public bool FindSoul(int soulId, out Soul soul)
+        {
+            lock (soulDictionaryLock)
+            {
+                if(IsSoulLinked(soulId))
+                {
+                    soul = soulDictionary[soulId];
+                    return true;
+                }
+                else
+                {
+                    soul = null;
                     return false;
                 }
             }

@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Door_of_Soul.Core", "Door_o
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Door_of_Soul.Core.Test", "Door_of_Soul.Core.Test\Door_of_Soul.Core.Test.csproj", "{8FE6EAF5-935A-4CCD-8626-0E527F6B3CDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Door_of_Soul.Core.Internal", "Door_of_Soul.Core.InternalServer\Door_of_Soul.Core.Internal.csproj", "{C23CF113-47DE-4876-B903-39583414371C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Door_of_Soul.Core.External", "Door_of_Soul.Core.External\Door_of_Soul.Core.External.csproj", "{3F47BD5A-DD1C-47CB-91D6-80AEE16C052A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{8FE6EAF5-935A-4CCD-8626-0E527F6B3CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FE6EAF5-935A-4CCD-8626-0E527F6B3CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FE6EAF5-935A-4CCD-8626-0E527F6B3CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23CF113-47DE-4876-B903-39583414371C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23CF113-47DE-4876-B903-39583414371C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23CF113-47DE-4876-B903-39583414371C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23CF113-47DE-4876-B903-39583414371C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F47BD5A-DD1C-47CB-91D6-80AEE16C052A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F47BD5A-DD1C-47CB-91D6-80AEE16C052A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F47BD5A-DD1C-47CB-91D6-80AEE16C052A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F47BD5A-DD1C-47CB-91D6-80AEE16C052A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
