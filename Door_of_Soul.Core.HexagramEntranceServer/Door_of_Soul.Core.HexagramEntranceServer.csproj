@@ -46,6 +46,7 @@
     <Compile Include="VirtualEntity.cs" />
     <Compile Include="VirtualScene.cs" />
     <Compile Include="VirtualSoul.cs" />
+    <Compile Include="VirtualSystem.cs" />
     <Compile Include="VirtualWorld.cs" />
   </ItemGroup>
   <ItemGroup>

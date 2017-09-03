@@ -41,6 +41,7 @@
     <Compile Include="Answer.cs" />
     <Compile Include="Avatar.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="GenericConfigurationLoader.cs" />
     <Compile Include="GenericSubjectRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\OperationReturnCode.cs" />
