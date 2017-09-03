@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{34C59E1E-EEE2-4B13-9802-39DAE818ABFD}</ProjectGuid>
+    <ProjectGuid>{8CDD1FE1-98C2-4BF5-B635-8C788D931F8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Door_of_Soul.Core</RootNamespace>
-    <AssemblyName>Door_of_Soul.Core</AssemblyName>
+    <RootNamespace>Door_of_Soul.Core.Client</RootNamespace>
+    <AssemblyName>Door_of_Soul.Core.Client</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,16 +39,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Answer.cs" />
-    <Compile Include="Avatar.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="GenericSubjectRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protocol\OperationReturnCode.cs" />
-    <Compile Include="Scene.cs" />
-    <Compile Include="Soul.cs" />
-    <Compile Include="System.cs" />
-    <Compile Include="World.cs" />
+    <Compile Include="VirtualAnswer.cs" />
+    <Compile Include="VirtualAvatar.cs" />
+    <Compile Include="VirtualEntity.cs" />
+    <Compile Include="VirtualScene.cs" />
+    <Compile Include="VirtualSoul.cs" />
+    <Compile Include="VirtualSystem.cs" />
+    <Compile Include="VirtualWorld.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Door_of_Soul.Core\Door_of_Soul.Core.csproj">
+      <Project>{34c59e1e-eee2-4b13-9802-39dae818abfd}</Project>
+      <Name>Door_of_Soul.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

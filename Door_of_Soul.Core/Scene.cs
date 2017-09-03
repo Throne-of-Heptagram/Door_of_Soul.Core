@@ -6,139 +6,106 @@ namespace Door_of_Soul.Core
 {
     public abstract class Scene
     {
-        public event Action<Scene, World> OnWorldLinked;
-        public event Action<Scene, World> OnWorldUnlinked;
+        public event Action<Scene, int> OnWorldLinked;
+        public event Action<Scene, int> OnWorldUnlinked;
 
-        public event Action<Scene, Entity> OnEntityEntered;
-        public event Action<Scene, Entity> OnEntityExited;
+        public event Action<Scene, int> OnEntityEntered;
+        public event Action<Scene, int> OnEntityExited;
 
-        public event Action<Scene, int> OnObserverAvatarIdUpdated;
+        public event Action<Scene, int> OnObserverAvatarLinked;
+        public event Action<Scene, int> OnObserverAvatarUnlinked;
 
         public int SceneId { get; private set; }
-        public World BelongingWorld { get; private set; }
-        public string SceneServerName { get; private set; }
+
+        private object worldIdLock = new object();
+        private int worldId;
+        public int WorldId
+        {
+            get { return worldId; }
+            set
+            {
+                lock (worldIdLock)
+                {
+                    if (WorldId != value)
+                    {
+                        int originalWorldId = WorldId;
+                        WorldId = value;
+                        if (originalWorldId != 0)
+                            OnWorldUnlinked?.Invoke(this, originalWorldId);
+                        if (WorldId != 0)
+                            OnWorldLinked?.Invoke(this, WorldId);
+                    }
+                }
+            }
+        }
+
+        private object observerAvatarIdLock = new object();
         private int observerAvatarId;
         public int ObserverAvatarId
         {
             get { return observerAvatarId; }
             set
             {
-                observerAvatarId = value;
-                OnObserverAvatarIdUpdated?.Invoke(this, observerAvatarId);
+                lock (observerAvatarIdLock)
+                {
+                    if (ObserverAvatarId != value)
+                    {
+                        int originalObserverAvatarId = ObserverAvatarId;
+                        ObserverAvatarId = value;
+                        if (originalObserverAvatarId != 0)
+                            OnObserverAvatarUnlinked?.Invoke(this, originalObserverAvatarId);
+                        if (ObserverAvatarId != 0)
+                            OnObserverAvatarLinked?.Invoke(this, ObserverAvatarId);
+                    }
+                }
             }
         }
 
-        private object entityDictionaryLock = new object();
-        private Dictionary<int, Entity> entityDictionary = new Dictionary<int, Entity>();
-        public IEnumerable<Entity> Entities
+        private object entityIdSetLock = new object();
+        private HashSet<int> entityIdSet = new HashSet<int>();
+        public IEnumerable<int> EntityIds
         {
             get
             {
-                lock (entityDictionaryLock)
+                lock (entityIdSetLock)
                 {
-                    return entityDictionary.Values.ToArray();
+                    return entityIdSet.ToArray();
                 }
-            }
-        }
-
-        public bool IsWorldLinked(int worldId)
-        {
-            return BelongingWorld != null && BelongingWorld.WorldId == worldId;
-        }
-        public bool LinkWorld(World world)
-        {
-            if (BelongingWorld != world)
-            {
-                UnlinkWorld();
-                BelongingWorld = world;
-                if (!BelongingWorld.IsSceneExisted(SceneId))
-                {
-                    BelongingWorld.AddScene(this);
-                }
-                OnWorldLinked?.Invoke(this, world);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool UnlinkWorld()
-        {
-            if (BelongingWorld != null)
-            {
-                if (BelongingWorld.IsSceneExisted(SceneId))
-                {
-                    BelongingWorld.RemoveScene(SceneId);
-                }
-                World world = BelongingWorld;
-                BelongingWorld = null;
-                OnWorldUnlinked?.Invoke(this, world);
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
         public bool IsEntityExisted(int entityId)
         {
-            return entityDictionary.ContainsKey(entityId);
+            return entityIdSet.Contains(entityId);
         }
-        public bool EntityEnter(Entity entity)
+        public bool EntityEnter(int entityId)
         {
-            lock (entityDictionaryLock)
+            lock (entityIdSetLock)
             {
-                if (IsEntityExisted(entity.EntityId))
+                if (IsEntityExisted(entityId))
                 {
                     return false;
                 }
                 else
                 {
-                    entityDictionary.Add(entity.EntityId, entity);
-                    if (!entity.IsExistedInScene(SceneId))
-                    {
-                        entity.EnterScene(this);
-                    }
-                    OnEntityEntered?.Invoke(this, entity);
+                    entityIdSet.Add(entityId);
+                    OnEntityEntered?.Invoke(this, entityId);
                     return true;
                 }
             }
         }
         public bool EntityExit(int entityId)
         {
-            lock (entityDictionaryLock)
+            lock (entityIdSetLock)
             {
                 if (IsEntityExisted(entityId))
                 {
-                    Entity entity = entityDictionary[entityId];
-                    entityDictionary.Remove(entityId);
-                    if (entity.IsExistedInScene(SceneId))
-                    {
-                        entity.ExitScene();
-                    }
-                    OnEntityExited?.Invoke(this, entity);
+                    entityIdSet.Remove(entityId);
+                    OnEntityExited?.Invoke(this, entityId);
                     return true;
                 }
                 else
                 {
-                    return false;
-                }
-            }
-        }
-        public bool FindEntity(int entityId, out Entity entity)
-        {
-            lock (entityDictionaryLock)
-            {
-                if (IsEntityExisted(entityId))
-                {
-                    entity = entityDictionary[entityId];
-                    return true;
-                }
-                else
-                {
-                    entity = null;
                     return false;
                 }
             }

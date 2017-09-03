@@ -4,56 +4,28 @@ namespace Door_of_Soul.Core
 {
     public abstract class Entity
     {
-        public event Action<Entity, Scene> OnEnteredScene;
-        public event Action<Entity, Scene> OnExitedScene;
+        public event Action<Entity, int> OnEnteredScene;
+        public event Action<Entity, int> OnExitedScene;
 
         public int EntityId { get; private set; }
-        private object existedSceneLock = new object();
-        public Scene ExistedScene { get; private set; }
-
-        public bool IsExistedInScene(int sceneId)
+        private object existedSceneIdLock = new object();
+        private int existedSceneId;
+        public int ExistedSceneId
         {
-            return ExistedScene?.SceneId == sceneId;
-        }
-        public bool EnterScene(Scene scene)
-        {
-            lock (existedSceneLock)
+            get { return existedSceneId; }
+            private set
             {
-                if (IsExistedInScene(scene.SceneId))
+                lock (existedSceneIdLock)
                 {
-                    return false;
-                }
-                else
-                {
-                    ExitScene();
-                    ExistedScene = scene;
-                    if (!scene.IsEntityExisted(EntityId))
+                    if (ExistedSceneId != value)
                     {
-                        scene.EntityEnter(this);
+                        int originalSceneId = ExistedSceneId;
+                        ExistedSceneId = value;
+                        if(originalSceneId != 0)
+                            OnExitedScene?.Invoke(this, originalSceneId);
+                        if (ExistedSceneId != 0)
+                            OnEnteredScene?.Invoke(this, ExistedSceneId);
                     }
-                    OnEnteredScene?.Invoke(this, ExistedScene);
-                    return true;
-                }
-            }
-        }
-        public bool ExitScene()
-        {
-            lock (existedSceneLock)
-            {
-                if (ExistedScene != null)
-                {
-                    Scene scene = ExistedScene;
-                    ExistedScene = null;
-                    if (scene.IsEntityExisted(EntityId))
-                    {
-                        scene.EntityExit(EntityId);
-                    }
-                    OnExitedScene?.Invoke(this, scene);
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
         }

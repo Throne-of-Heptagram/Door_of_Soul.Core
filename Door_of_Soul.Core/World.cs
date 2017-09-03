@@ -6,81 +6,56 @@ namespace Door_of_Soul.Core
 {
     public abstract class World
     {
-        public event Action<World, Scene> OnSceneAdded;
-        public event Action<World, Scene> OnSceneRemoved;
+        public event Action<World, int> OnSceneAdded;
+        public event Action<World, int> OnSceneRemoved;
 
         public int WorldId { get; private set; }
 
-        private object sceneDictionaryLock = new object();
-        private Dictionary<int, Scene> sceneDictionary = new Dictionary<int, Scene>();
-        public IEnumerable<Scene> Scenes
+        private object sceneIdSetLock = new object();
+        private HashSet<int> sceneIdSet = new HashSet<int>();
+        public IEnumerable<int> SceneIds
         {
             get
             {
-                lock (sceneDictionaryLock)
+                lock (sceneIdSetLock)
                 {
-                    return sceneDictionary.Values.ToArray();
+                    return sceneIdSet.ToArray();
                 }
             }
         }
 
         public bool IsSceneExisted(int sceneId)
         {
-            return sceneDictionary.ContainsKey(sceneId);
+            return sceneIdSet.Contains(sceneId);
         }
-        public bool AddScene(Scene scene)
+        public bool AddScene(int sceneId)
         {
-            lock (sceneDictionaryLock)
+            lock (sceneIdSetLock)
             {
-                if (IsSceneExisted(scene.SceneId))
+                if (IsSceneExisted(sceneId))
                 {
                     return false;
                 }
                 else
                 {
-                    sceneDictionary.Add(scene.SceneId, scene);
-                    if (!scene.IsWorldLinked(WorldId))
-                    {
-                        scene.LinkWorld(this);
-                    }
-                    OnSceneAdded?.Invoke(this, scene);
+                    sceneIdSet.Add(sceneId);
+                    OnSceneAdded?.Invoke(this, sceneId);
                     return true;
                 }
             }
         }
         public bool RemoveScene(int sceneId)
         {
-            lock (sceneDictionaryLock)
+            lock (sceneIdSetLock)
             {
                 if (IsSceneExisted(sceneId))
                 {
-                    Scene scene = sceneDictionary[sceneId];
-                    sceneDictionary.Remove(sceneId);
-                    if (scene.IsWorldLinked(WorldId))
-                    {
-                        scene.UnlinkWorld();
-                    }
-                    OnSceneRemoved?.Invoke(this, scene);
+                    sceneIdSet.Remove(sceneId);
+                    OnSceneRemoved?.Invoke(this, sceneId);
                     return true;
                 }
                 else
                 {
-                    return false;
-                }
-            }
-        }
-        public bool FindScene(int sceneId, out Scene scene)
-        {
-            lock (sceneDictionaryLock)
-            {
-                if (IsSceneExisted(sceneId))
-                {
-                    scene = sceneDictionary[sceneId];
-                    return true;
-                }
-                else
-                {
-                    scene = null;
                     return false;
                 }
             }

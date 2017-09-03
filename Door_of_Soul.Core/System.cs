@@ -2,6 +2,6 @@
 {
     public abstract class System
     {
-        public static System Instance { get; protected set; }
+        
     }
 }

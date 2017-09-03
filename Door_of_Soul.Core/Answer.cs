@@ -6,86 +6,56 @@ namespace Door_of_Soul.Core
 {
     public abstract class Answer
     {
-        public event Action<Answer, Soul> OnSoulLinked;
-        public event Action<Answer, Soul> OnSoulUnlinked;
+        public event Action<Answer, int> OnSoulLinked;
+        public event Action<Answer, int> OnSoulUnlinked;
 
         public int AnswerId { get; private set; }
 
-        private object soulDictionaryLock = new object();
-        private Dictionary<int, Soul> soulDictionary = new Dictionary<int, Soul>();
-        public IEnumerable<Soul> Souls
+        private object soulIdSetLock = new object();
+        private HashSet<int> soulIdSet = new HashSet<int>();
+        public IEnumerable<int> Souls
         {
             get
             {
-                lock (soulDictionaryLock)
+                lock (soulIdSetLock)
                 {
-                    return soulDictionary.Values.ToArray();
+                    return soulIdSet.ToArray();
                 }
             }
         }
 
-        protected Answer(int answerId)
-        {
-            AnswerId = answerId;
-        }
-
         public bool IsSoulLinked(int soulId)
         {
-            return soulDictionary.ContainsKey(soulId);
+            return soulIdSet.Contains(soulId);
         }
-        public bool LinkSoul(Soul soul)
+        public bool LinkSoul(int soulId)
         {
-            lock (soulDictionaryLock)
+            lock (soulIdSetLock)
             {
-                if(IsSoulLinked(soul.SoulId))
+                if(IsSoulLinked(soulId))
                 {
                     return false;
                 }
                 else
                 {
-                    soulDictionary.Add(soul.SoulId, soul);
-                    if(!soul.IsAnswerLinked(AnswerId))
-                    {
-                        soul.LinkAnswer(this);
-                    }
-                    OnSoulLinked?.Invoke(this, soul);
+                    soulIdSet.Add(soulId);
+                    OnSoulLinked?.Invoke(this, soulId);
                     return true;
                 }
             }
         }
         public bool UnlinkSoul(int soulId)
         {
-            lock (soulDictionaryLock)
+            lock (soulIdSetLock)
             {
                 if (IsSoulLinked(soulId))
                 {
-                    Soul soul = soulDictionary[soulId];
-                    soulDictionary.Remove(soulId);
-                    if(soul.IsAnswerLinked(AnswerId))
-                    {
-                        soul.UnlinkAnswer();
-                    }
-                    OnSoulUnlinked?.Invoke(this, soul);
+                    soulIdSet.Remove(soulId);
+                    OnSoulUnlinked?.Invoke(this, soulId);
                     return true;
                 }
                 else
                 {
-                    return false;
-                }
-            }
-        }
-        public bool FindSoul(int soulId, out Soul soul)
-        {
-            lock (soulDictionaryLock)
-            {
-                if(IsSoulLinked(soulId))
-                {
-                    soul = soulDictionary[soulId];
-                    return true;
-                }
-                else
-                {
-                    soul = null;
                     return false;
                 }
             }

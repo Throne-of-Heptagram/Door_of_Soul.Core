@@ -6,134 +6,81 @@ namespace Door_of_Soul.Core
 {
     public abstract class Soul
     {
-        public event Action<Soul, Answer> OnAnswerLinked;
-        public event Action<Soul, Answer> OnAnswerUnlinked;
+        public event Action<Soul, int> OnAnswerLinked;
+        public event Action<Soul, int> OnAnswerUnlinked;
 
-        public event Action<Soul, Avatar> OnAvatarLinked;
-        public event Action<Soul, Avatar> OnAvatarUnlinked;
+        public event Action<Soul, int> OnAvatarLinked;
+        public event Action<Soul, int> OnAvatarUnlinked;
 
         public int SoulId { get; private set; }
-        public Answer Answer { get; private set; }
 
-        private object avatarDictionaryLock = new object();
-        private Dictionary<int, Avatar> avatarDictionary = new Dictionary<int, Avatar>();
-        public IEnumerable<Avatar> Avatars
+        private object answerIdLock = new object();
+        private int answerId;
+        public int AnswerId
+        {
+            get { return answerId; }
+            set
+            {
+                lock (answerIdLock)
+                {
+                    if (AnswerId != value)
+                    {
+                        int originalAnswerId = AnswerId;
+                        AnswerId = value;
+                        if (originalAnswerId != 0)
+                            OnAnswerUnlinked?.Invoke(this, originalAnswerId);
+                        if (AnswerId != 0)
+                            OnAnswerLinked?.Invoke(this, AnswerId);
+                    }
+                }
+            }
+        }
+
+        private object avatarIdSetLock = new object();
+        private HashSet<int> avatarIdSet = new HashSet<int>();
+        public IEnumerable<int> AvatarIds
         {
             get
             {
-                lock (avatarDictionaryLock)
+                lock (avatarIdSetLock)
                 {
-                    return avatarDictionary.Values.ToArray();
+                    return avatarIdSet.ToArray();
                 }
-            }
-        }
-
-        protected Soul(int soulId)
-        {
-            SoulId = soulId;
-        }
-
-        public bool IsAnswerLinked(int answerId)
-        {
-            return Answer?.AnswerId == answerId;
-        }
-        public bool LinkAnswer(Answer answer)
-        {
-            if(Answer != answer)
-            {
-                if (Answer != null)
-                {
-                    UnlinkAnswer();
-                }
-                Answer = answer;
-                if (!Answer.IsSoulLinked(SoulId))
-                {
-                    Answer.LinkSoul(this);
-                }
-                OnAnswerLinked?.Invoke(this, Answer);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool UnlinkAnswer()
-        {
-            if (Answer != null)
-            {
-                if (Answer.IsSoulLinked(SoulId))
-                {
-                    Answer.UnlinkSoul(SoulId);
-                }
-                Answer answer = Answer;
-                Answer = null;
-                OnAnswerUnlinked?.Invoke(this, answer);
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
         public bool IsAvatarLinked(int avatarId)
         {
-            return avatarDictionary.ContainsKey(avatarId);
+            return avatarIdSet.Contains(avatarId);
         }
-        public bool LinkAvatar(Avatar avatar)
+        public bool LinkAvatar(int avatarId)
         {
-            lock (avatarDictionaryLock)
+            lock (avatarIdSetLock)
             {
-                if (IsAvatarLinked(avatar.AvatarId))
+                if (IsAvatarLinked(avatarId))
                 {
                     return false;
                 }
                 else
                 {
-                    avatarDictionary.Add(avatar.AvatarId, avatar);
-                    if(!avatar.IsSoulLinked(SoulId))
-                    {
-                        avatar.LinkSoul(this);
-                    }
-                    OnAvatarLinked?.Invoke(this, avatar);
+                    avatarIdSet.Add(avatarId);
+                    OnAvatarLinked?.Invoke(this, avatarId);
                     return true;
                 }
             }
         }
         public bool UnlinkAvatar(int avatarId)
         {
-            lock (avatarDictionaryLock)
+            lock (avatarIdSetLock)
             {
                 if (IsAvatarLinked(avatarId))
                 {
-                    Avatar avatar = avatarDictionary[avatarId];
-                    avatarDictionary.Remove(avatarId);
-                    if(avatar.IsSoulLinked(SoulId))
-                    {
-                        avatar.UnlinkSoul(SoulId);
-                    }
-                    OnAvatarUnlinked?.Invoke(this, avatar);
+                    avatarIdSet.Remove(avatarId);
+                    OnAvatarUnlinked?.Invoke(this, avatarId);
                     return true;
                 }
                 else
                 {
-                    return false;
-                }
-            }
-        }
-        public bool FindAvatar(int avatarId, out Avatar avatar)
-        {
-            lock (avatarDictionaryLock)
-            {
-                if (IsAvatarLinked(avatarId))
-                {
-                    avatar = avatarDictionary[avatarId];
-                    return true;
-                }
-                else
-                {
-                    avatar = null;
                     return false;
                 }
             }
