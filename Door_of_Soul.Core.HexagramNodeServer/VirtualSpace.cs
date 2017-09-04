@@ -3,7 +3,7 @@
     public abstract class VirtualSpace
     {
         public static VirtualSpace Instance { get; private set; }
-        public static void Initial(VirtualSpace instance)
+        public static void Initialize(VirtualSpace instance)
         {
             Instance = instance;
         }

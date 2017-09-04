@@ -3,7 +3,7 @@
     public abstract class VirtualKnowledge
     {
         public static VirtualKnowledge Instance { get; private set; }
-        public static void Initial(VirtualKnowledge instance)
+        public static void Initialize(VirtualKnowledge instance)
         {
             Instance = instance;
         }

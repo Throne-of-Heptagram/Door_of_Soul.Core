@@ -3,7 +3,7 @@
     public abstract class VirtualShadow
     {
         public static VirtualShadow Instance { get; private set; }
-        public static void Initial(VirtualShadow instance)
+        public static void Initialize(VirtualShadow instance)
         {
             Instance = instance;
         }

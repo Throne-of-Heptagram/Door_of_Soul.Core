@@ -3,7 +3,7 @@
     public abstract class VirtualEternity
     {
         public static VirtualEternity Instance { get; private set; }
-        public static void Initial(VirtualEternity instance)
+        public static void Initialize(VirtualEternity instance)
         {
             Instance = instance;
         }

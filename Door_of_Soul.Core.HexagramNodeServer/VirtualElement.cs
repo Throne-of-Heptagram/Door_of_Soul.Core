@@ -3,7 +3,7 @@
     public abstract class VirtualElement
     {
         public static VirtualElement Instance { get; private set; }
-        public static void Initial(VirtualElement instance)
+        public static void Initialize(VirtualElement instance)
         {
             Instance = instance;
         }

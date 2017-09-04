@@ -3,7 +3,7 @@
     public abstract class VirtualHistory
     {
         public static VirtualHistory Instance { get; private set; }
-        public static void Initial(VirtualHistory instance)
+        public static void Initialize(VirtualHistory instance)
         {
             Instance = instance;
         }

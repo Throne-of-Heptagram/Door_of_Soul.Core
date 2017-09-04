@@ -3,7 +3,7 @@
     public abstract class VirtualLife
     {
         public static VirtualLife Instance { get; private set; }
-        public static void Initial(VirtualLife instance)
+        public static void Initialize(VirtualLife instance)
         {
             Instance = instance;
         }

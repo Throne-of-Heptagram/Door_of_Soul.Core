@@ -3,7 +3,7 @@
     public abstract class VirtualInfinite
     {
         public static VirtualInfinite Instance { get; private set; }
-        public static void Initial(VirtualInfinite instance)
+        public static void Initialize(VirtualInfinite instance)
         {
             Instance = instance;
         }
