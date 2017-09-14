@@ -29,5 +29,12 @@ namespace Door_of_Soul.Core
                 }
             }
         }
+        public SimpleVector3 Position { get; set; }
+        public SimpleVector3 EulerAngles { get; set; }
+        public SimpleVector3 Scale { get; set; }
+        public float Mass { get; set; }
+        public float Drag { get; set; }
+        public float AngularDrag { get; set; }
+        public bool UseGravity { get; set; }
     }
 }

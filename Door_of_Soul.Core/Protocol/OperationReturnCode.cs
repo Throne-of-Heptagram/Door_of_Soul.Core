@@ -3,6 +3,12 @@
     public enum OperationReturnCode : short
     {
         Successiful,
-        ParameterCountError
+        ParameterCountError,
+        NullObject,
+        DbTransactionFailed,
+        DbNoChanged,
+        ParameterFormateError,
+        Duplicated,
+        NotExisted,
     }
 }
