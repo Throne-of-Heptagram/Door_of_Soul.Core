@@ -2,6 +2,7 @@
 {
     public enum OperationReturnCode : short
     {
+        UndefinedError,
         Successiful,
         ParameterCountError,
         NullObject,
@@ -10,5 +11,6 @@
         ParameterFormateError,
         Duplicated,
         NotExisted,
+        AuthenticationFailed,
     }
 }
