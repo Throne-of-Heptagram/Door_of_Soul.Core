@@ -10,10 +10,11 @@ namespace Door_of_Soul.Core
         public event Action<Answer, int> OnSoulUnlinked;
 
         public int AnswerId { get; private set; }
+        public string AnswerName { get; private set; }
 
         private object soulIdSetLock = new object();
         private HashSet<int> soulIdSet = new HashSet<int>();
-        public IEnumerable<int> Souls
+        public IEnumerable<int> SoulIds
         {
             get
             {
@@ -22,6 +23,12 @@ namespace Door_of_Soul.Core
                     return soulIdSet.ToArray();
                 }
             }
+        }
+
+        protected Answer(int answerId, string answerName)
+        {
+            AnswerId = answerId;
+            AnswerName = answerName;
         }
 
         public bool IsSoulLinked(int soulId)

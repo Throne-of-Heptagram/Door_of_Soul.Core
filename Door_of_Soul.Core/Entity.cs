@@ -20,7 +20,7 @@ namespace Door_of_Soul.Core
                     if (ExistedSceneId != value)
                     {
                         int originalSceneId = ExistedSceneId;
-                        ExistedSceneId = value;
+                        existedSceneId = value;
                         if(originalSceneId != 0)
                             OnExitedScene?.Invoke(this, originalSceneId);
                         if (ExistedSceneId != 0)

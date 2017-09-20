@@ -12,5 +12,6 @@
         Duplicated,
         NotExisted,
         AuthenticationFailed,
+        InstantiateFailed,
     }
 }

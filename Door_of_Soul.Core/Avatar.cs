@@ -11,6 +11,7 @@ namespace Door_of_Soul.Core
 
         public int AvatarId { get; private set; }
         public int EntityId { get; private set; }
+        public string AvatarName { get; private set; }
 
         private object soulIdSetLock = new object();
         private HashSet<int> soulSet = new HashSet<int>();
@@ -23,6 +24,13 @@ namespace Door_of_Soul.Core
                     return soulSet.ToArray();
                 }
             }
+        }
+
+        protected Avatar(int avatarId, int entityId, string avatarName)
+        {
+            AvatarId = avatarId;
+            EntityId = entityId;
+            AvatarName = avatarName;
         }
 
         public bool IsSoulLinked(int soulId)

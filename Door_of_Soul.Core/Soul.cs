@@ -12,7 +12,12 @@ namespace Door_of_Soul.Core
         public event Action<Soul, int> OnAvatarLinked;
         public event Action<Soul, int> OnAvatarUnlinked;
 
+        public event Action<Soul> OnActivated;
+        public event Action<Soul> OnDeactivated;
+
         public int SoulId { get; private set; }
+        public string SoulName { get; private set; }
+        public bool IsActivated { get; private set; }
 
         private object answerIdLock = new object();
         private int answerId;
@@ -26,7 +31,7 @@ namespace Door_of_Soul.Core
                     if (AnswerId != value)
                     {
                         int originalAnswerId = AnswerId;
-                        AnswerId = value;
+                        answerId = value;
                         if (originalAnswerId != 0)
                             OnAnswerUnlinked?.Invoke(this, originalAnswerId);
                         if (AnswerId != 0)
@@ -47,6 +52,13 @@ namespace Door_of_Soul.Core
                     return avatarIdSet.ToArray();
                 }
             }
+        }
+
+        protected Soul(int soulId, string soulName, bool isActivated)
+        {
+            SoulId = soulId;
+            SoulName = soulName;
+            IsActivated = isActivated;
         }
 
         public bool IsAvatarLinked(int avatarId)
@@ -84,6 +96,16 @@ namespace Door_of_Soul.Core
                     return false;
                 }
             }
+        }
+        public void Activate()
+        {
+            IsActivated = true;
+            OnActivated?.Invoke(this);
+        }
+        public void Deactivate()
+        {
+            IsActivated = false;
+            OnDeactivated?.Invoke(this);
         }
     }
 }

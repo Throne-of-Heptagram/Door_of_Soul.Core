@@ -29,7 +29,7 @@ namespace Door_of_Soul.Core
                     if (WorldId != value)
                     {
                         int originalWorldId = WorldId;
-                        WorldId = value;
+                        worldId = value;
                         if (originalWorldId != 0)
                             OnWorldUnlinked?.Invoke(this, originalWorldId);
                         if (WorldId != 0)
@@ -51,7 +51,7 @@ namespace Door_of_Soul.Core
                     if (ObserverAvatarId != value)
                     {
                         int originalObserverAvatarId = ObserverAvatarId;
-                        ObserverAvatarId = value;
+                        observerAvatarId = value;
                         if (originalObserverAvatarId != 0)
                             OnObserverAvatarUnlinked?.Invoke(this, originalObserverAvatarId);
                         if (ObserverAvatarId != 0)

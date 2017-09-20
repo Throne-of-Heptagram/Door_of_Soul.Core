@@ -1,4 +1,6 @@
-﻿namespace Door_of_Soul.Core.HexagramNodeServer
+﻿using Door_of_Soul.Core.Protocol;
+
+namespace Door_of_Soul.Core.HexagramNodeServer
 {
     public abstract class VirtualWill
     {
@@ -7,5 +9,9 @@
         {
             Instance = instance;
         }
+
+        protected object getWillSoulLock = new object();
+
+        public abstract OperationReturnCode GetWillSoul(int hexagramEntranceId, int soulId, out string errorMessage);
     }
 }
