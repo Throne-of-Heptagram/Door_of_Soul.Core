@@ -9,9 +9,5 @@ namespace Door_of_Soul.Core.HexagramNodeServer
         {
             Instance = instance;
         }
-
-        protected object getLifeAvatarLock = new object();
-
-        public abstract OperationReturnCode GetLifeAvatar(int hexagramEntranceId, int avatarId, out string errorMessage);
     }
 }

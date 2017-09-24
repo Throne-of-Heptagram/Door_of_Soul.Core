@@ -1,4 +1,4 @@
-﻿namespace Door_of_Soul.Core.HexagramEntranceServer
+﻿namespace Door_of_Soul.Core.TrinityServer
 {
     public abstract class VirtualAnswer : Answer
     {

@@ -10,8 +10,6 @@ namespace Door_of_Soul.Core.HexagramNodeServer
             Instance = instance;
         }
 
-        protected object getThroneAnswerLock = new object();
-
-        public abstract OperationReturnCode GetThroneAnswer(int hexagramEntranceId, int answerId, out string errorMessage);
+        public abstract OperationReturnCode DeviceRegister(int entranceId, int endPointId, int deviceId, string answerName, string basicPassword, out string errorMessage);
     }
 }
