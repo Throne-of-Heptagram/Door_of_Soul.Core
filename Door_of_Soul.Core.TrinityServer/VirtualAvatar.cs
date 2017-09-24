@@ -1,4 +1,4 @@
-﻿namespace Door_of_Soul.Core.ProxyServer
+﻿namespace Door_of_Soul.Core.TrinityServer
 {
     public abstract class VirtualAvatar : Avatar
     {

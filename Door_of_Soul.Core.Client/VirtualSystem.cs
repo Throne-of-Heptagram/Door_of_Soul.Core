@@ -6,7 +6,8 @@ namespace Door_of_Soul.Core.Client
     public abstract class VirtualSystem : System
     {
         public event Action<OperationReturnCode, string> OnRegisterResponse;
-        public event Action<OperationReturnCode, string> OnLoginResponse;
+        public delegate void LoginResponseEventHandler(OperationReturnCode returnCode, string operationMessage, string trinityServerAddress, int trinityServerPort, string trinityServerApplicationName, int answerId, string answerAccessToken);
+        public event LoginResponseEventHandler OnLoginResponse;
 
         public static VirtualSystem Instance { get; private set; }
         public static void Initialize(VirtualSystem instance)
@@ -21,11 +22,9 @@ namespace Door_of_Soul.Core.Client
         }
 
         public abstract OperationReturnCode Login(string answerName, string basicPassword, out string errorMessage);
-        public void LoginResponse(OperationReturnCode returnCode, string operationMessage)
+        public void LoginResponse(OperationReturnCode returnCode, string operationMessage, string trinityServerAddress, int trinityServerPort, string trinityServerApplicationName, int answerId, string answerAccessToken)
         {
-            OnLoginResponse?.Invoke(returnCode, operationMessage);
+            OnLoginResponse?.Invoke(returnCode, operationMessage, trinityServerAddress, trinityServerPort, trinityServerApplicationName, answerId, answerAccessToken);
         }
-
-        public abstract void LoadProxyAnswer(int answerId, string answerName, int[] soulIds);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Door_of_Soul.Core.SceneServer
+﻿namespace Door_of_Soul.Core.ObserverServer
 {
     public abstract class VirtualSystem : System
     {

@@ -1,6 +1,4 @@
-﻿using Door_of_Soul.Core.Protocol;
-
-namespace Door_of_Soul.Core.HexagramEntranceServer
+﻿namespace Door_of_Soul.Core.TrinityServer
 {
     public abstract class VirtualSystem : System
     {
@@ -9,7 +7,5 @@ namespace Door_of_Soul.Core.HexagramEntranceServer
         {
             Instance = instance;
         }
-
-        public abstract OperationReturnCode DeviceRegister(int endPointId, int deviceId, string answerName, string basicPassword, out string errorMessage);
     }
 }

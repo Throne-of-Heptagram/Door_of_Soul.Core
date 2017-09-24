@@ -9,9 +9,5 @@ namespace Door_of_Soul.Core.HexagramNodeServer
         {
             Instance = instance;
         }
-
-        protected object getWillSoulLock = new object();
-
-        public abstract OperationReturnCode GetWillSoul(int hexagramEntranceId, int soulId, out string errorMessage);
     }
 }
