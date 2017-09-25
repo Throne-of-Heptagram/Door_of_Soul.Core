@@ -36,5 +36,10 @@ namespace Door_of_Soul.Core
         public float Drag { get; set; }
         public float AngularDrag { get; set; }
         public bool UseGravity { get; set; }
+
+        public override string ToString()
+        {
+            return $"Entity Id:{EntityId} ExistedSceneId:{ExistedSceneId}";
+        }
     }
 }

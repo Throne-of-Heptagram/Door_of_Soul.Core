@@ -16,6 +16,7 @@ namespace Door_of_Soul.Core
         public event Action<Scene, int> OnObserverAvatarUnlinked;
 
         public int SceneId { get; private set; }
+        public string SceneName { get; private set; }
 
         private object worldIdLock = new object();
         private int worldId;
@@ -72,6 +73,11 @@ namespace Door_of_Soul.Core
                     return entityIdSet.ToArray();
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Scene Id:{SceneId} Name:{SceneName} WorldId:{WorldId} ";
         }
 
         public bool IsEntityExisted(int entityId)

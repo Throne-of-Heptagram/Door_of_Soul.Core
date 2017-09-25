@@ -7,5 +7,10 @@
         {
             Instance = instance;
         }
+
+        public override string ToString()
+        {
+            return "Destiny";
+        }
     }
 }

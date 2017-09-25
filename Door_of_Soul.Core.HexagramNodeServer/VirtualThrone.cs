@@ -10,6 +10,10 @@ namespace Door_of_Soul.Core.HexagramNodeServer
             Instance = instance;
         }
 
+        public override string ToString()
+        {
+            return "Throne";
+        }
         public abstract OperationReturnCode DeviceRegister(int entranceId, int endPointId, int deviceId, string answerName, string basicPassword, out string errorMessage);
     }
 }

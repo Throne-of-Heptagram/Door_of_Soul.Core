@@ -30,6 +30,10 @@ namespace Door_of_Soul.Core
             AnswerId = answerId;
             AnswerName = answerName;
         }
+        public override string ToString()
+        {
+            return $"Answer Id:{AnswerId}, Name:{AnswerName}";
+        }
 
         public bool IsSoulLinked(int soulId)
         {

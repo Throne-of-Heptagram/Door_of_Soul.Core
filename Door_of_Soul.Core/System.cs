@@ -2,6 +2,9 @@
 {
     public abstract class System
     {
-        
+        public override string ToString()
+        {
+            return "System";
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Door_of_Soul.Core
         public event Action<World, int> OnSceneRemoved;
 
         public int WorldId { get; private set; }
+        public string WorldName { get; private set; }
 
         private object sceneIdSetLock = new object();
         private HashSet<int> sceneIdSet = new HashSet<int>();
@@ -22,6 +23,11 @@ namespace Door_of_Soul.Core
                     return sceneIdSet.ToArray();
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"World Id:{WorldId} Name:{WorldName}";
         }
 
         public bool IsSceneExisted(int sceneId)

@@ -8,6 +8,10 @@
             Instance = instance;
         }
 
+        public override string ToString()
+        {
+            return "Space";
+        }
         public abstract bool FindWorld(int worldId, out VirtualWorld world);
         public abstract bool FindScene(int sceneId, out VirtualScene scene);
     }

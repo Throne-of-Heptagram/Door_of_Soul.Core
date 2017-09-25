@@ -60,6 +60,10 @@ namespace Door_of_Soul.Core
             SoulName = soulName;
             IsActivated = isActivated;
         }
+        public override string ToString()
+        {
+            return $"Soul Id:{SoulId} Name:{SoulName} IsActivated:{IsActivated} AnswerId:{AnswerId}";
+        }
 
         public bool IsAvatarLinked(int avatarId)
         {

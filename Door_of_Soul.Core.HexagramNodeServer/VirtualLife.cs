@@ -9,5 +9,10 @@ namespace Door_of_Soul.Core.HexagramNodeServer
         {
             Instance = instance;
         }
+
+        public override string ToString()
+        {
+            return "Life";
+        }
     }
 }

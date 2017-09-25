@@ -32,6 +32,10 @@ namespace Door_of_Soul.Core
             EntityId = entityId;
             AvatarName = avatarName;
         }
+        public override string ToString()
+        {
+            return $"Avatar Id:{AvatarId} EntityId:{EntityId} Name:{AvatarName}";
+        }
 
         public bool IsSoulLinked(int soulId)
         {
