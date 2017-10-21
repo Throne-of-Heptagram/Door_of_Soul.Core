@@ -13,5 +13,6 @@
         NotExisted,
         AuthenticationFailed,
         InstantiateFailed,
+        TargetDisconnected,
     }
 }

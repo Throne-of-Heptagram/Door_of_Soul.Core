@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="Answer.cs" />
     <Compile Include="Avatar.cs" />
+    <Compile Include="DisposableEvent.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="GenericConfigurationLoader.cs" />
     <Compile Include="GenericSubjectRepository.cs" />
+    <Compile Include="IEventDependencyReleasable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol\OperationReturnCode.cs" />
     <Compile Include="Scene.cs" />

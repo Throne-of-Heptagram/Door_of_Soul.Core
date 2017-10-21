@@ -1,4 +1,6 @@
-﻿namespace Door_of_Soul.Core.TrinityServer
+﻿using Door_of_Soul.Core.Protocol;
+
+namespace Door_of_Soul.Core.TrinityServer
 {
     public abstract class VirtualSystem : System
     {
@@ -7,5 +9,7 @@
         {
             Instance = instance;
         }
+
+        public abstract OperationReturnCode AssignAnswer(int answerId, out string errorMessage);
     }
 }

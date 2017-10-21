@@ -10,14 +10,26 @@ namespace Door_of_Soul.Core.LoginServer
             Instance = instance;
         }
 
-        public delegate void GetAnswerTrinityServerResponseEventHandler(OperationReturnCode returnCode, string operationMessage, int trinityServerEndPointId, int answerId, string answerAccessToken);
-        public abstract event GetAnswerTrinityServerResponseEventHandler OnGetAnswerTrinityServer;
+        public struct GetAnswerTrinityServerResponseParameter
+        {
+            public OperationReturnCode returnCode;
+            public string operationMessage;
+            public int trinityServerEndPointId;
+            public int answerId;
+            public string answerAccessToken;
+        }
+        protected DisposableEvent<VirtualSystem, GetAnswerTrinityServerResponseParameter> OnGetAnswerTrinityServer { get; private set; }
+
+        protected VirtualSystem()
+        {
+            OnGetAnswerTrinityServer = new DisposableEvent<VirtualSystem, GetAnswerTrinityServerResponseParameter>(this);
+        }
 
         public abstract OperationReturnCode Register(int deviceId, string answerName, string basicPassword, out string errorMessage);
 
         public abstract OperationReturnCode Login(int deviceId, string answerName, string basicPassword, out string errorMessage);
 
         public abstract OperationReturnCode GetAnswerTrinityServer(int answerId, out string errorMessage);
-        public abstract void GetAnswerTrinityServerResponse(OperationReturnCode returnCode, string operationMessage, int trinityServerEndPointId, int answerId, string answerAccessToken);
+        public abstract void GetAnswerTrinityServerResponse(GetAnswerTrinityServerResponseParameter responseParameter);
     }
 }
